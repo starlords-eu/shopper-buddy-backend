@@ -1,0 +1,6 @@
+apiVersion: v2
+name: substituted-from-pipeline
+description: substituted-from-pipeline
+type: application
+version: 0.1.0
+appVersion: substituted-from-pipeline

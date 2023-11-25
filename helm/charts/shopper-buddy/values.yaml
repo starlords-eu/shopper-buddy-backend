@@ -1,0 +1,20 @@
+replicaCount: 1
+
+appVersion: substituted-from-pipeline
+
+image:
+  migrationsRepository: substituted-from-pipeline
+  repository: substituted-from-pipeline
+  tag: substituted-from-pipeline
+  pullPolicy: IfNotPresent
+
+containerPort: 8080
+serviceType: ClusterIP
+servicePort: 80
+
+clusterIssuer: letsencrypt-prod
+
+subdomains: substituted-from-pipeline
+
+database:
+  appOwnerSecretName: "shopper-buddy-prod-owner-connection"

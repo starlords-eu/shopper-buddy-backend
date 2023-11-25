@@ -1,0 +1,15 @@
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: {{ .Release.Name }}-certificates
+  namespace: {{ .Release.Namespace }}
+spec:
+  secretName: {{ .Release.Name }}-key
+  issuerRef:
+    name: letsencrypt-prod
+    kind: ClusterIssuer
+  dnsNames:
+{{- $subdomains := split "," .Values.subdomains }}
+{{- range $subdomains }}
+    - {{ . }}
+{{- end }}

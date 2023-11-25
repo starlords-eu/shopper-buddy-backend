@@ -1,0 +1,28 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: {{ .Release.Name }}-ingress
+  annotations:
+    cert-manager.io/cluster-issuer: {{ .Values.clusterIssuer }}
+    nginx.ingress.kubernetes.io/ssl-redirect: "true"
+    nginx.ingress.kubernetes.io/avoid-tls-rate-limits: "true"
+    nginx.ingress.kubernetes.io/fanout: "true"
+    nginx.ingress.kubernetes.io/hsts: "true"
+spec:
+  ingressClassName: nginx
+  tls:
+    - hosts: {{ .Values.subdomains | split "," | toYaml | nindent 6 }}
+      secretName: {{ .Release.Name }}-key
+  rules:
+  {{- range (.Values.subdomains | split ",") }}
+    - host: {{ . }}
+      http:
+        paths:
+          - pathType: Prefix
+            path: "/"
+            backend:
+              service:
+                name: {{ $.Release.Name }}-service
+                port:
+                  number: {{ $.Values.servicePort }}
+  {{- end }}
